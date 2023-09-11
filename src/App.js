@@ -26,10 +26,40 @@ const PickerContainer = styled.div`
   padding: 8px;
   text-align: center;
   z-index: 99;
+  background-color: rgba(255, 255, 255, 0.6);
 `;
+
+const ColourContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin: 0 auto;
+  margin-top: 16px;
+`;
+
+const Colour = styled.div`
+  width: 20px;
+  height: 20px;
+  border-radius: 2px;
+  background-color: ${({ colour }) => colour};
+  cursor: pointer;
+  margin-left: 4px;
+  margin-right: 4px;
+`;
+
+const colors = [
+  "#990000",
+  "#ffa500",
+  "#000000",
+  "green",
+  "yellow",
+  "#00ccff",
+  "#666666",
+];
 
 function App() {
   const [selectedFile, setSelectedFile] = useState(null);
+  const [modelColor, setModelColor] = useState(colors[0]);
 
   return (
     <div>
@@ -41,6 +71,15 @@ function App() {
             setSelectedFile(URL.createObjectURL(e.currentTarget.files[0]))
           }
         />
+        <ColourContainer>
+          {colors.map((color, i) => (
+            <Colour
+              colour={color}
+              key={i}
+              onClick={() => setModelColor(color)}
+            />
+          ))}
+        </ColourContainer>
       </PickerContainer>
       {selectedFile && (
         <Viewer
@@ -48,7 +87,7 @@ function App() {
           shadows
           showAxes
           modelProps={{
-            color: "#ffa500",
+            color: modelColor,
           }}
           url={selectedFile}
         />

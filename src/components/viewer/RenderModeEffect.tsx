@@ -16,6 +16,9 @@ export function RenderModeEffect() {
     model.object.traverse((child) => {
       if (!(child as THREE.Mesh).isMesh) return
       const mesh = child as THREE.Mesh
+      // Some loaders (FBX, GLTF skinned meshes) can yield isMesh nodes
+      // without a usable geometry — skip them to avoid crashes.
+      if (!mesh.geometry) return
 
       // Cache original material on first encounter
       if (!mesh.userData.originalMaterial) {
@@ -56,7 +59,6 @@ export function RenderModeEffect() {
 
         case 'solid+wireframe': {
           mesh.visible = true
-          // Ensure polygon offset on base to avoid z-fighting
           const applyOffset = (mat: THREE.Material) => {
             mat.polygonOffset = true
             mat.polygonOffsetFactor = 1
@@ -82,9 +84,12 @@ export function RenderModeEffect() {
         case 'normals': {
           mesh.visible = true
           if (!mesh.userData.normalMaterial) {
-            mesh.userData.normalMaterial = new THREE.MeshNormalMaterial({ flatShading: false })
+            mesh.userData.normalMaterial = new THREE.MeshNormalMaterial()
           }
-          if (!mesh.geometry.attributes.normal) mesh.geometry.computeVertexNormals()
+          // Ensure vertex normals exist; some loaders omit them
+          if (!mesh.geometry.attributes['normal']) {
+            try { mesh.geometry.computeVertexNormals() } catch { /* skip */ }
+          }
           mesh.material = mesh.userData.normalMaterial as THREE.Material
           break
         }

@@ -41,10 +41,7 @@ async function initOC() {
 
   // Dynamically import the emscripten glue JS as a module
   // It exports a default factory function
-  const { default: opencascadeFactory } = await import(
-    /* @vite-ignore */
-    'opencascade.js/dist/opencascade.wasm.js'
-  )
+  const { default: opencascadeFactory } = await import('opencascade.js/dist/opencascade.wasm.js')
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return new (opencascadeFactory as any)({

@@ -1,11 +1,16 @@
 import * as THREE from 'three'
 import { STLLoader } from 'three/examples/jsm/loaders/STLLoader.js'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
+import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js'
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js'
 import { PLYLoader } from 'three/examples/jsm/loaders/PLYLoader.js'
 import type { ModelFormat, LoadedModel, ViewerError } from '../types/viewer'
 import { computeModelStats } from '../utils/computeModelStats'
+
+// Shared DRACOLoader instance — decoder served from gstatic CDN
+const dracoLoader = new DRACOLoader()
+dracoLoader.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.7/')
 
 export async function loadModel(
   file: File,
@@ -29,28 +34,38 @@ export async function loadModel(
       object.add(mesh)
     } else if (format === 'glb' || format === 'gltf') {
       const loader = new GLTFLoader()
-      const gltf = await new Promise<{ scene: THREE.Object3D }>((resolve, reject) => {
-        loader.load(url, resolve, undefined, reject)
-      })
-      object = gltf.scene
-      object.traverse((child: THREE.Object3D) => {
-        if ((child as THREE.Mesh).isMesh) {
-          child.castShadow = true
-          child.receiveShadow = true
+      loader.setDRACOLoader(dracoLoader)
+      try {
+        const buffer = await file.arrayBuffer()
+        const gltf = await new Promise<{ scene: THREE.Object3D }>((resolve, reject) => {
+          loader.parse(buffer, '', resolve, reject)
+        })
+        object = gltf.scene
+        object.traverse((child: THREE.Object3D) => {
+          if ((child as THREE.Mesh).isMesh) {
+            child.castShadow = true
+            child.receiveShadow = true
+          }
+        })
+      } catch (e) {
+        if ((e as ViewerError).code) throw e
+        const err: ViewerError = {
+          code: 'PARSE_FAILED',
+          message: `Failed to parse GLB/GLTF file: ${(e as Error).message ?? 'Unknown error'}`,
+          fileName: file.name,
         }
-      })
+        throw err
+      }
     } else if (format === 'obj') {
       try {
         const loader = new OBJLoader()
-        const loaded = await new Promise<THREE.Group>((resolve, reject) => {
-          loader.load(url, resolve, undefined, reject)
-        })
+        const text = await file.text()
+        const loaded = loader.parse(text)
+        const defaultMaterial = new THREE.MeshStandardMaterial({ color: '#bfc7d5', metalness: 0.1, roughness: 0.7 })
         loaded.traverse((child) => {
           if ((child as THREE.Mesh).isMesh) {
             const mesh = child as THREE.Mesh
-            if (!mesh.material || Array.isArray(mesh.material) === false) {
-              mesh.material = new THREE.MeshStandardMaterial({ color: '#bfc7d5', metalness: 0.1, roughness: 0.7 })
-            }
+            mesh.material = defaultMaterial
             mesh.castShadow = true
             mesh.receiveShadow = true
           }

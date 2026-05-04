@@ -20,10 +20,15 @@ export async function loadStep(
       { type: 'module' }
     )
 
-    const buffer = file.arrayBuffer()
-
-    buffer.then((buf) => {
+    file.arrayBuffer().then((buf) => {
       worker.postMessage({ buffer: buf, preset }, [buf])
+    }).catch((e) => {
+      worker.terminate()
+      reject({
+        code: 'PARSE_FAILED',
+        message: `Failed to read STEP file: ${(e as Error).message ?? 'Unknown error'}`,
+        fileName: file.name,
+      } as ViewerError)
     })
 
     worker.onmessage = (e) => {

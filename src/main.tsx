@@ -11,18 +11,18 @@ class ErrorBoundary extends Component<{ children: ReactNode }, { error: Error | 
       return (
         <div style={{
           display: 'flex', flexDirection: 'column', alignItems: 'center',
-          justifyContent: 'center', height: '100vh', background: '#0d0f0c',
-          color: '#f4f1eb', fontFamily: 'Literata, serif', gap: 16,
+          justifyContent: 'center', height: '100vh', background: '#0A0A0A',
+          color: '#F5F5F7', fontFamily: 'Inter, sans-serif', gap: 16,
         }}>
-          <p style={{ fontSize: 14, color: '#c9a16f', letterSpacing: 2 }}>MEEN VIEWER</p>
-          <p style={{ fontSize: 13, color: '#72907a' }}>
+          <p style={{ fontSize: 14, color: '#C9A227', letterSpacing: 2 }}>MEEN VIEWER</p>
+          <p style={{ fontSize: 13, color: '#8E8E93' }}>
             {(this.state.error as Error).message}
           </p>
           <button
             onClick={() => this.setState({ error: null })}
             style={{
-              padding: '8px 20px', background: '#2f3e31', color: '#f4f1eb',
-              border: '1px solid #3d5040', borderRadius: 6, cursor: 'pointer',
+              padding: '8px 20px', background: '#141414', color: '#F5F5F7',
+              border: '1px solid rgba(255,255,255,0.08)', borderRadius: 6, cursor: 'pointer',
               fontSize: 12, letterSpacing: 1,
             }}
           >

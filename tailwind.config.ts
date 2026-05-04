@@ -6,23 +6,21 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        mm: {
-          green: {
-            darker:  '#1a2419',
-            dark:    '#2f3e31',
-            DEFAULT: '#3d5040',
-            light:   '#4d6451',
-            muted:   '#72907a',
-          },
-          brown:  '#6e483e',
-          gold:   '#c9a16f',
-          cream:  '#f4f1eb',
-          'cream-dim': '#d5e8d7',
+        ml: {
+          black:    '#0A0A0A',
+          charcoal: '#141414',
+          gunmetal: '#1C1C1E',
+          gold:     '#C9A227',
+          amber:    '#D4A84B',
+          champagne:'#F7E7CE',
+          silver:   '#8E8E93',
+          platinum: '#C7C7CC',
+          white:    '#F5F5F7',
         },
       },
       fontFamily: {
-        serif:    ['"DM Serif Display"', 'serif'],
-        literata: ['Literata', 'serif'],
+        sans:  ['Inter', 'sans-serif'],
+        serif: ['"Playfair Display"', 'serif'],
       },
     },
   },

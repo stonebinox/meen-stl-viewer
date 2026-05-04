@@ -5,12 +5,12 @@ export function MeasurementToolbar() {
     useMeasurementStore()
 
   return (
-    <div className="bg-mm-green-dark/80 backdrop-blur-sm rounded-lg p-3 flex flex-col gap-2 min-w-[180px]">
+    <div className="bg-ml-charcoal/80 backdrop-blur-sm rounded-lg p-3 flex flex-col gap-2 min-w-[180px]">
       <div className="flex items-center justify-between">
-        <span className="text-xs font-serif text-mm-gold uppercase tracking-wider">Measure</span>
+        <span className="text-xs font-serif text-ml-gold uppercase tracking-wider">Measure</span>
         <button
           onClick={() => setEnabled(!enabled)}
-          className={`px-2 py-0.5 text-xs rounded transition-colors ${enabled ? 'bg-mm-gold text-mm-green-dark font-medium' : 'bg-mm-green text-mm-green-muted'}`}
+          className={`px-2 py-0.5 text-xs rounded transition-colors ${enabled ? 'bg-ml-gold text-ml-black font-medium' : 'bg-ml-gunmetal text-ml-silver'}`}
         >
           {enabled ? 'Active' : 'Off'}
         </button>
@@ -21,23 +21,23 @@ export function MeasurementToolbar() {
           <div className="flex gap-1">
             <button
               onClick={() => setUnitMode('model')}
-              className={`flex-1 py-1 text-xs rounded transition-colors ${unitMode === 'model' ? 'bg-mm-gold text-mm-green-dark font-medium' : 'bg-mm-green text-mm-cream-dim'}`}
+              className={`flex-1 py-1 text-xs rounded transition-colors ${unitMode === 'model' ? 'bg-ml-gold text-ml-black font-medium' : 'bg-ml-gunmetal text-ml-platinum'}`}
             >
               Units
             </button>
             <button
               onClick={() => setUnitMode('mm')}
-              className={`flex-1 py-1 text-xs rounded transition-colors ${unitMode === 'mm' ? 'bg-mm-gold text-mm-green-dark font-medium' : 'bg-mm-green text-mm-cream-dim'}`}
+              className={`flex-1 py-1 text-xs rounded transition-colors ${unitMode === 'mm' ? 'bg-ml-gold text-ml-black font-medium' : 'bg-ml-gunmetal text-ml-platinum'}`}
             >
               mm
             </button>
           </div>
 
           {draftPoint && (
-            <div className="text-xs text-mm-gold">Click second point…</div>
+            <div className="text-xs text-ml-gold">Click second point…</div>
           )}
 
-          <div className="text-xs text-mm-green-muted">
+          <div className="text-xs text-ml-silver">
             {items.length} measurement{items.length !== 1 ? 's' : ''}
           </div>
 
@@ -45,7 +45,7 @@ export function MeasurementToolbar() {
             {draftPoint && (
               <button
                 onClick={clearDraft}
-                className="flex-1 py-1 text-xs rounded bg-mm-green text-mm-cream-dim hover:bg-mm-green-light transition-colors"
+                className="flex-1 py-1 text-xs rounded bg-ml-gunmetal text-ml-platinum hover:bg-white/[0.1] transition-colors"
               >
                 Cancel
               </button>
@@ -53,7 +53,7 @@ export function MeasurementToolbar() {
             {items.length > 0 && (
               <button
                 onClick={clearAll}
-                className="flex-1 py-1 text-xs rounded bg-mm-green text-mm-cream-dim hover:bg-mm-green-light transition-colors"
+                className="flex-1 py-1 text-xs rounded bg-ml-gunmetal text-ml-platinum hover:bg-white/[0.1] transition-colors"
               >
                 Clear all
               </button>

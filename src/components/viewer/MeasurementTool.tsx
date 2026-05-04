@@ -25,29 +25,29 @@ const BADGE_STYLE = (_letter: string): React.CSSProperties => ({
   width: 28,
   height: 28,
   borderRadius: '50%',
-  background: '#c9a16f',
-  color: '#1a2419',
+  background: '#C9A227',
+  color: '#0A0A0A',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
   fontSize: 13,
   fontWeight: 700,
-  fontFamily: 'monospace',
-  boxShadow: '0 2px 8px rgba(0,0,0,0.9), 0 0 0 2px #2f3e31',
+  fontFamily: 'Inter, sans-serif',
+  boxShadow: '0 2px 8px rgba(0,0,0,0.9), 0 0 0 2px #141414',
   letterSpacing: 0,
 })
 
 const DISTANCE_LABEL_STYLE: React.CSSProperties = {
   pointerEvents: 'none',
   userSelect: 'none',
-  background: '#2f3e31',
-  border: '1.5px solid #c9a16f',
-  color: '#c9a16f',
+  background: '#141414',
+  border: '1.5px solid #C9A227',
+  color: '#C9A227',
   padding: '5px 14px',
   borderRadius: 6,
   fontSize: 14,
-  fontWeight: 700,
-  fontFamily: 'monospace',
+  fontWeight: 600,
+  fontFamily: 'Inter, sans-serif',
   whiteSpace: 'nowrap',
   boxShadow: '0 3px 12px rgba(0,0,0,0.95)',
   letterSpacing: '0.05em',
@@ -84,7 +84,7 @@ export function MeasurementTool() {
         <>
           <mesh position={draftPoint} renderOrder={999}>
             <sphereGeometry args={[markerRadius, 16, 16]} />
-            <meshBasicMaterial color="#c9a16f" depthTest={false} />
+            <meshBasicMaterial color="#C9A227" depthTest={false} />
           </mesh>
           <Html position={draftPoint} center>
             <div style={POINT_LABEL_STYLE}>
@@ -104,12 +104,12 @@ export function MeasurementTool() {
         const dist = formatDistance(m.distanceModel, unitMode, mmPerUnit)
         return (
           <group key={m.id}>
-            <Line points={[m.a, m.b]} color="#c9a16f" lineWidth={2.5} />
+            <Line points={[m.a, m.b]} color="#C9A227" lineWidth={2.5} />
 
             {/* Point A */}
             <mesh position={m.a} renderOrder={999}>
               <sphereGeometry args={[markerRadius, 16, 16]} />
-              <meshBasicMaterial color="#c9a16f" depthTest={false} />
+              <meshBasicMaterial color="#C9A227" depthTest={false} />
             </mesh>
             <Html position={m.a} center>
               <div style={POINT_LABEL_STYLE}>
@@ -120,7 +120,7 @@ export function MeasurementTool() {
             {/* Point B */}
             <mesh position={m.b} renderOrder={999}>
               <sphereGeometry args={[markerRadius, 16, 16]} />
-              <meshBasicMaterial color="#c9a16f" depthTest={false} />
+              <meshBasicMaterial color="#C9A227" depthTest={false} />
             </mesh>
             <Html position={m.b} center>
               <div style={POINT_LABEL_STYLE}>

@@ -10,6 +10,8 @@ body,
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background: #0d0f0c;
-  font-family: 'Literata', serif;
+  background: #0A0A0A;
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }

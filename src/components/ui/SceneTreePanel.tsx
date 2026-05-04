@@ -24,10 +24,10 @@ export function SceneTreePanel() {
   const flatNodes = flattenTree(rootIds)
 
   return (
-    <div className="absolute left-0 top-0 h-full w-64 bg-mm-green-dark/90 backdrop-blur-sm border-r border-mm-green flex flex-col z-10">
-      <div className="px-3 py-2 border-b border-mm-green flex items-center justify-between">
-        <span className="text-xs font-serif text-mm-gold uppercase tracking-wider">Scene</span>
-        <span className="text-xs text-mm-green-muted">{Object.keys(nodesById).length} nodes</span>
+    <div className="absolute left-0 top-0 h-full w-64 bg-ml-charcoal/90 backdrop-blur-sm border-r border-white/[0.08] flex flex-col z-10">
+      <div className="px-3 py-2 border-b border-white/[0.08] flex items-center justify-between">
+        <span className="text-xs font-serif text-ml-gold uppercase tracking-wider">Scene</span>
+        <span className="text-xs text-ml-silver">{Object.keys(nodesById).length} nodes</span>
       </div>
       <div className="flex-1 overflow-y-auto">
         {flatNodes.map(id => {
@@ -42,25 +42,25 @@ export function SceneTreePanel() {
               key={id}
               style={{ paddingLeft: `${8 + node.depth * 16}px` }}
               className={`flex items-center gap-1 h-7 pr-2 cursor-pointer text-xs group
-                ${isSelected ? 'bg-mm-gold/20 text-mm-cream' : 'text-mm-cream-dim hover:bg-mm-green/50'}
+                ${isSelected ? 'bg-ml-gold/20 text-ml-white' : 'text-ml-platinum hover:bg-ml-gunmetal/50'}
                 ${!node.visible ? 'opacity-40' : ''}`}
               onClick={() => node.selectable && setSelectedNode(id)}
             >
               <button
-                className="w-4 h-4 flex items-center justify-center shrink-0 text-mm-green-muted"
+                className="w-4 h-4 flex items-center justify-center shrink-0 text-ml-silver"
                 onClick={(e) => { e.stopPropagation(); if (hasChildren) toggleExpanded(id) }}
               >
                 {hasChildren ? (isExpanded ? '▾' : '▸') : ''}
               </button>
 
-              <span className="text-mm-green-muted shrink-0">
+              <span className="text-ml-silver shrink-0">
                 {node.type === 'mesh' ? '⬡' : node.type === 'group' ? '▤' : '○'}
               </span>
 
               <span className="flex-1 truncate">{node.name}</span>
 
               <button
-                className="w-5 h-5 flex items-center justify-center shrink-0 opacity-0 group-hover:opacity-100 text-mm-green-muted hover:text-mm-cream"
+                className="w-5 h-5 flex items-center justify-center shrink-0 opacity-0 group-hover:opacity-100 text-ml-silver hover:text-ml-white"
                 onClick={(e) => { e.stopPropagation(); toggleVisibility(id, objectMapRef.current) }}
                 title={node.visible ? 'Hide' : 'Show'}
               >

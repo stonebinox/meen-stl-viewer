@@ -20,7 +20,7 @@ export function ViewPresetButtons() {
           key={p.value}
           onClick={() => applyPreset(p.value)}
           title={p.key ? `Shortcut: ${p.key}` : undefined}
-          className="px-2 py-1 text-xs rounded bg-mm-green text-mm-cream-dim hover:bg-mm-green-light hover:text-mm-cream active:bg-mm-green-dark transition-colors"
+          className="px-2 py-1 text-xs rounded bg-ml-gunmetal text-ml-platinum hover:bg-white/[0.1] hover:text-ml-white active:bg-ml-charcoal transition-colors"
         >
           {p.label}
         </button>

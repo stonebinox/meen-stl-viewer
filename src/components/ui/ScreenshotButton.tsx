@@ -8,13 +8,13 @@ export function ScreenshotButton() {
       <div className="flex gap-1">
         <button
           onClick={() => setBgMode('transparent')}
-          className={`flex-1 py-1 text-xs rounded transition-colors ${bgMode === 'transparent' ? 'bg-mm-gold text-mm-green-dark font-medium' : 'bg-mm-green text-mm-cream-dim'}`}
+          className={`flex-1 py-1 text-xs rounded transition-colors ${bgMode === 'transparent' ? 'bg-ml-gold text-ml-black font-medium' : 'bg-ml-gunmetal text-ml-platinum'}`}
         >
           Transparent
         </button>
         <button
           onClick={() => setBgMode('white')}
-          className={`flex-1 py-1 text-xs rounded transition-colors ${bgMode === 'white' ? 'bg-mm-gold text-mm-green-dark font-medium' : 'bg-mm-green text-mm-cream-dim'}`}
+          className={`flex-1 py-1 text-xs rounded transition-colors ${bgMode === 'white' ? 'bg-ml-gold text-ml-black font-medium' : 'bg-ml-gunmetal text-ml-platinum'}`}
         >
           White BG
         </button>
@@ -22,7 +22,7 @@ export function ScreenshotButton() {
       <button
         onClick={exportPng}
         disabled={isExporting}
-        className="py-1.5 text-xs rounded bg-mm-green text-mm-cream hover:bg-mm-green-light disabled:opacity-50 transition-colors"
+        className="py-1.5 text-xs rounded bg-ml-gunmetal text-ml-white hover:bg-white/[0.1] disabled:opacity-50 transition-colors"
       >
         {isExporting ? 'Exporting…' : 'Export PNG'}
       </button>

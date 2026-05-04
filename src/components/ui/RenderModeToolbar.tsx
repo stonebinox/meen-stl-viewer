@@ -18,8 +18,8 @@ export function RenderModeToolbar() {
           onClick={() => setMode(m.value)}
           className={`px-2 py-1 text-xs rounded transition-colors ${
             mode === m.value
-              ? 'bg-mm-gold text-mm-green-dark font-medium'
-              : 'bg-mm-green text-mm-cream-dim hover:bg-mm-green-light hover:text-mm-cream'
+              ? 'bg-ml-gold text-ml-black font-medium'
+              : 'bg-ml-gunmetal text-ml-platinum hover:bg-white/[0.1] hover:text-ml-white'
           }`}
         >
           {m.label}

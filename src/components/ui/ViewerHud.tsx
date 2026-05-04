@@ -37,17 +37,17 @@ export function ViewerHud() {
         <div className="relative">
           <button
             onClick={() => setShowRecent((r) => !r)}
-            className="px-2 py-1 text-xs rounded bg-mm-green-dark/80 backdrop-blur-sm text-mm-cream-dim hover:text-mm-cream hover:bg-mm-green/80 transition-colors"
+            className="px-2 py-1 text-xs rounded bg-ml-charcoal/80 backdrop-blur-sm text-ml-platinum hover:text-ml-white hover:bg-ml-gunmetal/80 transition-colors"
           >
             Recent
           </button>
           {showRecent && (
-            <div className="absolute top-8 left-0 bg-mm-green-dark border border-mm-green rounded-lg shadow-2xl w-72 max-h-80 overflow-y-auto z-50">
-              <div className="px-3 py-2 border-b border-mm-green flex items-center justify-between">
-                <span className="text-xs font-serif text-mm-gold uppercase tracking-wider">Recent Files</span>
+            <div className="absolute top-8 left-0 bg-ml-charcoal border border-white/[0.08] rounded-lg shadow-2xl w-72 max-h-80 overflow-y-auto z-50">
+              <div className="px-3 py-2 border-b border-white/[0.08] flex items-center justify-between">
+                <span className="text-xs font-serif text-ml-gold uppercase tracking-wider">Recent Files</span>
                 <button
                   onClick={() => setShowRecent(false)}
-                  className="text-mm-green-muted hover:text-mm-cream text-xs"
+                  className="text-ml-silver hover:text-ml-white text-xs"
                 >
                   ✕
                 </button>
@@ -63,7 +63,7 @@ export function ViewerHud() {
         className="absolute top-4 pointer-events-auto flex flex-col gap-2 items-end"
         style={{ right: RIGHT_OFFSET + PAD }}
       >
-        <div className="flex rounded overflow-hidden bg-mm-green-dark/80 backdrop-blur-sm">
+        <div className="flex rounded overflow-hidden bg-ml-charcoal/80 backdrop-blur-sm">
           {ENVIRONMENT_OPTIONS.map((opt) => (
             <button
               key={opt.value}
@@ -71,8 +71,8 @@ export function ViewerHud() {
               className={[
                 'px-3 py-1.5 text-xs tracking-wide transition-colors',
                 environmentPreset === opt.value
-                  ? 'bg-mm-gold/20 text-mm-gold'
-                  : 'text-mm-cream-dim hover:text-mm-cream',
+                  ? 'bg-ml-gold/20 text-ml-gold'
+                  : 'text-ml-platinum hover:text-ml-white',
               ].join(' ')}
             >
               {opt.label}
@@ -82,13 +82,13 @@ export function ViewerHud() {
         <div className="flex gap-1">
           <button
             onClick={fitToView}
-            className="px-3 py-1.5 text-xs tracking-wide rounded bg-mm-green-dark/80 backdrop-blur-sm text-mm-cream-dim hover:text-mm-cream hover:bg-mm-green/80 transition-colors"
+            className="px-3 py-1.5 text-xs tracking-wide rounded bg-ml-charcoal/80 backdrop-blur-sm text-ml-platinum hover:text-ml-white hover:bg-ml-gunmetal/80 transition-colors"
           >
             Fit to View
           </button>
           <button
             onClick={resetCamera}
-            className="px-3 py-1.5 text-xs tracking-wide rounded bg-mm-green-dark/80 backdrop-blur-sm text-mm-cream-dim hover:text-mm-cream hover:bg-mm-green/80 transition-colors"
+            className="px-3 py-1.5 text-xs tracking-wide rounded bg-ml-charcoal/80 backdrop-blur-sm text-ml-platinum hover:text-ml-white hover:bg-ml-gunmetal/80 transition-colors"
           >
             Reset Camera
           </button>
@@ -102,10 +102,10 @@ export function ViewerHud() {
       >
         {/* Left: shading modes + view presets */}
         <div className="flex flex-col gap-1.5 items-start">
-          <div className="bg-mm-green-dark/80 backdrop-blur-sm rounded-lg px-2 py-1.5">
+          <div className="bg-ml-charcoal/80 backdrop-blur-sm rounded-lg px-2 py-1.5">
             <RenderModeToolbar />
           </div>
-          <div className="bg-mm-green-dark/80 backdrop-blur-sm rounded-lg px-2 py-1.5">
+          <div className="bg-ml-charcoal/80 backdrop-blur-sm rounded-lg px-2 py-1.5">
             <ViewPresetButtons />
           </div>
         </div>
@@ -114,8 +114,8 @@ export function ViewerHud() {
         <div className="flex gap-2 items-end">
           <MeasurementToolbar />
           <ClippingPanel />
-          <div className="bg-mm-green-dark/80 backdrop-blur-sm rounded-lg p-3 flex flex-col gap-2 min-w-[160px]">
-            <span className="text-xs font-serif text-mm-gold uppercase tracking-wider">Export</span>
+          <div className="bg-ml-charcoal/80 backdrop-blur-sm rounded-lg p-3 flex flex-col gap-2 min-w-[160px]">
+            <span className="text-xs font-serif text-ml-gold uppercase tracking-wider">Export</span>
             <ScreenshotButton />
           </div>
         </div>

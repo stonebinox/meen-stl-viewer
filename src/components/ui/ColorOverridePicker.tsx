@@ -19,12 +19,12 @@ export function ColorOverridePicker() {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center" onClick={closePicker}>
       <div
-        className="bg-gray-900 border border-gray-700 rounded-xl p-4 shadow-2xl flex flex-col gap-3"
+        className="bg-mm-green-dark border border-mm-green rounded-xl p-4 shadow-2xl flex flex-col gap-3"
         onClick={e => e.stopPropagation()}
       >
         <div className="flex items-center justify-between">
-          <span className="text-sm font-medium text-white truncate max-w-[180px]">{meshName}</span>
-          <button onClick={closePicker} className="text-gray-400 hover:text-white ml-4">✕</button>
+          <span className="text-sm font-serif text-mm-cream truncate max-w-[180px]">{meshName}</span>
+          <button onClick={closePicker} className="text-mm-green-muted hover:text-mm-cream ml-4">✕</button>
         </div>
 
         <HexColorPicker color={currentColor} onChange={c => setOverride(selectedMeshUuid, c)} />
@@ -32,13 +32,13 @@ export function ColorOverridePicker() {
         <div className="flex gap-2">
           <button
             onClick={() => clearOverride(selectedMeshUuid)}
-            className="flex-1 py-1.5 text-xs rounded bg-gray-700 text-gray-300 hover:bg-gray-600"
+            className="flex-1 py-1.5 text-xs rounded bg-mm-green text-mm-cream-dim hover:bg-mm-green-light transition-colors"
           >
             Reset mesh
           </button>
           <button
             onClick={() => { clearAll(); closePicker() }}
-            className="flex-1 py-1.5 text-xs rounded bg-gray-700 text-gray-300 hover:bg-gray-600"
+            className="flex-1 py-1.5 text-xs rounded bg-mm-green text-mm-cream-dim hover:bg-mm-green-light transition-colors"
           >
             Reset all
           </button>

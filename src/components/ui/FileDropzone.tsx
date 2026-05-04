@@ -53,10 +53,10 @@ export function FileDropzone() {
 
   if (status === 'loading') {
     return (
-      <div className="absolute inset-0 flex items-center justify-center bg-black/70 z-20">
+      <div className="absolute inset-0 flex items-center justify-center bg-mm-green-darker/80 z-20">
         <div className="flex flex-col items-center gap-4">
-          <div className="w-10 h-10 border-2 border-white/20 border-t-white rounded-full animate-spin" />
-          <p className="text-white/80 text-sm tracking-wide">
+          <div className="w-10 h-10 border-2 border-mm-green border-t-mm-gold rounded-full animate-spin" />
+          <p className="text-mm-cream-dim text-sm tracking-wide">
             Loading {currentModel?.fileName ?? ''}...
           </p>
         </div>
@@ -76,7 +76,7 @@ export function FileDropzone() {
         />
         <button
           onClick={openPicker}
-          className="absolute top-4 left-20 z-10 px-3 py-1.5 text-xs font-medium tracking-wide rounded bg-black/60 backdrop-blur-sm text-white/70 hover:text-white hover:bg-black/80 transition-colors"
+          className="absolute top-4 left-20 z-10 px-3 py-1.5 text-xs tracking-wide rounded bg-mm-green-dark/80 backdrop-blur-sm text-mm-cream-dim hover:text-mm-cream hover:bg-mm-green/80 transition-colors"
         >
           Load new file
         </button>
@@ -88,7 +88,7 @@ export function FileDropzone() {
     <div
       className={[
         'absolute inset-0 z-10 flex items-center justify-center',
-        dragActive ? 'bg-black/80' : 'bg-black/60',
+        dragActive ? 'bg-mm-green-darker/90' : 'bg-mm-green-darker/75',
       ].join(' ')}
       onDragEnter={onDragEnter}
       onDragOver={onDragOver}
@@ -108,8 +108,8 @@ export function FileDropzone() {
         className={[
           'flex flex-col items-center gap-6 p-12 rounded-xl border-2 border-dashed transition-all cursor-pointer select-none',
           dragActive
-            ? 'border-white/60 bg-white/5'
-            : 'border-white/20 bg-white/[0.02] hover:border-white/40',
+            ? 'border-mm-gold/60 bg-mm-gold/5'
+            : 'border-mm-green/40 bg-mm-green-dark/20 hover:border-mm-green/70',
         ].join(' ')}
         onClick={(e) => e.stopPropagation()}
         onDragEnter={onDragEnter}
@@ -119,7 +119,7 @@ export function FileDropzone() {
       >
         <div className="flex flex-col items-center gap-2">
           <svg
-            className="w-12 h-12 text-white/30"
+            className="w-12 h-12 text-mm-green-muted"
             fill="none"
             viewBox="0 0 48 48"
             stroke="currentColor"
@@ -131,19 +131,19 @@ export function FileDropzone() {
               d="M24 8v24m0-24l-8 8m8-8l8 8M8 36h32"
             />
           </svg>
-          <p className="text-white text-base font-medium tracking-wide">
+          <p className="text-mm-cream font-serif text-lg tracking-wide">
             Drop a 3D file or click to browse
           </p>
-          <p className="text-white/40 text-xs tracking-widest uppercase">
+          <p className="text-mm-green-muted text-xs tracking-widest uppercase">
             STL · GLB · GLTF · OBJ · FBX · PLY · STP
           </p>
         </div>
 
         {error && (
-          <div className="flex flex-col items-center gap-1 px-4 py-3 rounded-lg bg-red-500/10 border border-red-500/30">
+          <div className="flex flex-col items-center gap-1 px-4 py-3 rounded-lg bg-red-900/20 border border-red-500/30">
             <p className="text-red-400 text-sm font-medium">{error.message}</p>
             <button
-              className="text-white/50 text-xs hover:text-white/80 transition-colors mt-1"
+              className="text-mm-green-muted text-xs hover:text-mm-cream transition-colors mt-1"
               onClick={(e) => {
                 e.stopPropagation()
                 clearError()
@@ -155,7 +155,7 @@ export function FileDropzone() {
         )}
 
         <button
-          className="px-6 py-2 rounded-lg bg-white/10 hover:bg-white/20 text-white text-sm font-medium tracking-wide transition-colors border border-white/10"
+          className="px-6 py-2 rounded-lg bg-mm-gold/10 hover:bg-mm-gold/20 text-mm-gold text-sm tracking-wide transition-colors border border-mm-gold/30"
           onClick={(e) => {
             e.stopPropagation()
             openPicker()

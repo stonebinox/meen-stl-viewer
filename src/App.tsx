@@ -20,7 +20,7 @@ function App() {
   useUrlLoader()
 
   return (
-    <div style={{ width: '100vw', height: '100vh', background: '#0a0a0a', position: 'relative' }}>
+    <div style={{ width: '100vw', height: '100vh', background: '#0d0f0c', position: 'relative' }}>
       <ViewerCanvas>
         <SceneRig />
         <SceneModel />

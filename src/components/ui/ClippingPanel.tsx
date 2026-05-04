@@ -8,12 +8,12 @@ export function ClippingPanel() {
   if (!model) return null
 
   return (
-    <div className="bg-black/70 backdrop-blur-sm rounded-lg p-3 flex flex-col gap-2 min-w-[180px]">
+    <div className="bg-mm-green-dark/80 backdrop-blur-sm rounded-lg p-3 flex flex-col gap-2 min-w-[180px]">
       <div className="flex items-center justify-between">
-        <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Section</span>
+        <span className="text-xs font-serif text-mm-gold uppercase tracking-wider">Section</span>
         <button
           onClick={() => setEnabled(!enabled)}
-          className={`px-2 py-0.5 text-xs rounded ${enabled ? 'bg-blue-600 text-white' : 'bg-gray-700 text-gray-400'}`}
+          className={`px-2 py-0.5 text-xs rounded transition-colors ${enabled ? 'bg-mm-gold text-mm-green-dark font-medium' : 'bg-mm-green text-mm-green-muted'}`}
         >
           {enabled ? 'On' : 'Off'}
         </button>
@@ -21,14 +21,13 @@ export function ClippingPanel() {
 
       {enabled && (
         <>
-          {/* Axis selector */}
           <div className="flex gap-1">
             {(['x', 'y', 'z'] as ClipAxis[]).map(a => (
               <button
                 key={a}
                 onClick={() => setAxis(a)}
-                className={`flex-1 py-1 text-xs rounded font-mono uppercase ${
-                  axis === a ? 'bg-blue-600 text-white' : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                className={`flex-1 py-1 text-xs rounded font-mono uppercase transition-colors ${
+                  axis === a ? 'bg-mm-gold text-mm-green-dark font-medium' : 'bg-mm-green text-mm-cream-dim hover:bg-mm-green-light'
                 }`}
               >
                 {a}
@@ -36,22 +35,20 @@ export function ClippingPanel() {
             ))}
           </div>
 
-          {/* Slider */}
           <div className="flex flex-col gap-1">
             <input
               type="range"
               min={0} max={1} step={0.001}
               value={normalized}
               onChange={e => setNormalized(parseFloat(e.target.value))}
-              className="w-full accent-blue-500"
+              className="w-full accent-[#c9a16f]"
             />
-            <span className="text-xs text-gray-500 text-center">{(normalized * 100).toFixed(1)}%</span>
+            <span className="text-xs text-mm-green-muted text-center">{(normalized * 100).toFixed(1)}%</span>
           </div>
 
-          {/* Flip */}
           <button
             onClick={toggleFlipped}
-            className="px-2 py-1 text-xs rounded bg-gray-700 text-gray-300 hover:bg-gray-600"
+            className="px-2 py-1 text-xs rounded bg-mm-green text-mm-cream-dim hover:bg-mm-green-light transition-colors"
           >
             {flipped ? 'Flip ↑' : 'Flip ↓'}
           </button>

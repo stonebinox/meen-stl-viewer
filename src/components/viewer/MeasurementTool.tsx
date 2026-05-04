@@ -65,7 +65,7 @@ export function MeasurementTool() {
               <meshBasicMaterial color="#ffcc00" />
             </mesh>
             <Html position={mid} center distanceFactor={3}>
-              <div className="bg-black/80 text-yellow-300 text-xs px-2 py-1 rounded whitespace-nowrap pointer-events-none font-mono">
+              <div className="bg-mm-green-dark/90 text-mm-gold text-xs px-2 py-1 rounded whitespace-nowrap pointer-events-none font-mono">
                 {dist}
               </div>
             </Html>

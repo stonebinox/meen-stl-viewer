@@ -16,10 +16,10 @@ export function RenderModeToolbar() {
         <button
           key={m.value}
           onClick={() => setMode(m.value)}
-          className={`px-2 py-1 text-xs rounded ${
+          className={`px-2 py-1 text-xs rounded transition-colors ${
             mode === m.value
-              ? 'bg-blue-600 text-white'
-              : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+              ? 'bg-mm-gold text-mm-green-dark font-medium'
+              : 'bg-mm-green text-mm-cream-dim hover:bg-mm-green-light hover:text-mm-cream'
           }`}
         >
           {m.label}

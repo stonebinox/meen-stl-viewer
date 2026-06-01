@@ -73,7 +73,11 @@ workerSelf.onmessage = async (e: MessageEvent<WorkerRequest>) => {
     if (status !== oc.IFSelect_ReturnStatus.IFSelect_RetDone) {
       throw new Error('Failed to read STEP file')
     }
-    reader.TransferRoots(new oc.Message_ProgressRange_1())
+    // Transfer all roots — opencascade.js v1.x may not have Message_ProgressRange
+    const numRoots = reader.NbRootsForTransfer()
+    for (let r = 1; r <= numRoots; r++) {
+      reader.TransferRoot(r)
+    }
 
     const shapes: ShapeData[] = []
     const { linear, angular } = presets[preset]

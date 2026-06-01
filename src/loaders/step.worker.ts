@@ -31,6 +31,12 @@ const presets: Record<TessellationPreset, { linear: number; angular: number }> =
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let oc: any = null
 
+// Safe delete helper — some OC objects may not have .delete()
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function del(obj: any) {
+  try { obj?.delete?.() } catch { /* already freed or not an embind object */ }
+}
+
 async function initOC() {
   // Import the emscripten JS module directly (CJS-style factory)
   // and the WASM binary as a URL so Vite copies it as an asset
@@ -54,8 +60,20 @@ async function initOC() {
   })
 }
 
+function mapErrorMessage(err: unknown): string {
+  const msg = err instanceof Error ? err.message : String(err)
+  if (msg.includes('__cxa_can_catch') || msg.includes('__cxa_') || msg.includes('OOM') || msg.includes('memory')) {
+    return 'Model too large or complex for the CAD engine. Try a simpler file or reduce tessellation quality.'
+  }
+  return msg
+}
+
 workerSelf.onmessage = async (e: MessageEvent<WorkerRequest>) => {
   const { buffer, preset } = e.data
+  const fileName = 'model.step'
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let reader: any = null
 
   try {
     if (!oc) {
@@ -65,10 +83,9 @@ workerSelf.onmessage = async (e: MessageEvent<WorkerRequest>) => {
 
     workerSelf.postMessage({ type: 'progress', message: 'Parsing STEP file…' } satisfies WorkerResponse)
 
-    const fileName = 'model.step'
     oc.FS.createDataFile('/', fileName, new Uint8Array(buffer), true, true, true)
 
-    const reader = new oc.STEPControl_Reader_1()
+    reader = new oc.STEPControl_Reader_1()
     const status = reader.ReadFile(fileName)
     if (status !== oc.IFSelect_ReturnStatus.IFSelect_RetDone) {
       throw new Error('Failed to read STEP file')
@@ -85,8 +102,7 @@ workerSelf.onmessage = async (e: MessageEvent<WorkerRequest>) => {
     const numShapes = reader.NbShapes()
     for (let i = 1; i <= numShapes; i++) {
       const shape = reader.Shape(i)
-
-      new oc.BRepMesh_IncrementalMesh_2(shape, linear, false, angular, true)
+      const mesher = new oc.BRepMesh_IncrementalMesh_2(shape, linear, false, angular, true)
 
       const positions: number[] = []
       const normals: number[] = []
@@ -100,53 +116,77 @@ workerSelf.onmessage = async (e: MessageEvent<WorkerRequest>) => {
       )
 
       for (; expFace.More(); expFace.Next()) {
-        const face = oc.TopoDS.Face_1(expFace.Current())
-        const location = new oc.TopLoc_Location_1()
-        const triangulation = oc.BRep_Tool.Triangulation(face, location)
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        let face: any = null, location: any = null, triangulation: any = null, tri: any = null, trsf: any = null
+        try {
+          face = oc.TopoDS.Face_1(expFace.Current())
+          location = new oc.TopLoc_Location_1()
+          triangulation = oc.BRep_Tool.Triangulation(face, location)
 
-        if (triangulation.IsNull()) continue
+          if (triangulation.IsNull()) continue
 
-        const tri = triangulation.get()
-        const numNodes = tri.NbNodes()
-        const numTris = tri.NbTriangles()
-        const trsf = location.IsIdentity() ? null : location.Transformation()
+          tri = triangulation.get()
+          const numNodes = tri.NbNodes()
+          const numTris = tri.NbTriangles()
+          trsf = location.IsIdentity() ? null : location.Transformation()
 
-        for (let n = 1; n <= numNodes; n++) {
-          const pnt = tri.Node(n)
-          if (trsf) pnt.Transform(trsf)
-          positions.push(pnt.X(), pnt.Y(), pnt.Z())
-          normals.push(0, 1, 0)
-        }
-
-        const reversed = face.Orientation_1() === oc.TopAbs_Orientation.TopAbs_REVERSED
-
-        for (let t = 1; t <= numTris; t++) {
-          const triangle = tri.Triangle(t)
-          const n1 = triangle.Value(1)
-          const n2 = triangle.Value(2)
-          const n3 = triangle.Value(3)
-          const base = indexOffset
-          if (reversed) {
-            indices.push(base + n1 - 1, base + n3 - 1, base + n2 - 1)
-          } else {
-            indices.push(base + n1 - 1, base + n2 - 1, base + n3 - 1)
+          for (let n = 1; n <= numNodes; n++) {
+            const pnt = tri.Node(n)
+            try {
+              if (trsf) pnt.Transform(trsf)
+              positions.push(pnt.X(), pnt.Y(), pnt.Z())
+              normals.push(0, 1, 0)
+            } finally {
+              del(pnt)
+            }
           }
-        }
 
-        indexOffset += numNodes
+          const reversed = face.Orientation_1() === oc.TopAbs_Orientation.TopAbs_REVERSED
+
+          for (let t = 1; t <= numTris; t++) {
+            const triangle = tri.Triangle(t)
+            try {
+              const n1 = triangle.Value(1)
+              const n2 = triangle.Value(2)
+              const n3 = triangle.Value(3)
+              const base = indexOffset
+              if (reversed) {
+                indices.push(base + n1 - 1, base + n3 - 1, base + n2 - 1)
+              } else {
+                indices.push(base + n1 - 1, base + n2 - 1, base + n3 - 1)
+              }
+            } finally {
+              del(triangle)
+            }
+          }
+
+          indexOffset += numNodes
+        } finally {
+          del(trsf)
+          del(tri)
+          del(triangulation)
+          del(location)
+          del(face)
+        }
       }
 
-      if (positions.length === 0) continue
+      del(expFace)
+      del(mesher)
 
-      shapes.push({
-        positions: new Float32Array(positions),
-        normals: new Float32Array(normals),
-        indices: new Uint32Array(indices),
-        name: `Shape_${i}`,
-      })
+      if (positions.length > 0) {
+        shapes.push({
+          positions: new Float32Array(positions),
+          normals: new Float32Array(normals),
+          indices: new Uint32Array(indices),
+          name: `Shape_${i}`,
+        })
+      }
+
+      del(shape)
     }
 
-    try { oc.FS.unlink('/' + fileName) } catch {}
+    del(reader)
+    reader = null
 
     if (shapes.length === 0) {
       throw new Error('No geometry extracted from STEP file')
@@ -156,9 +196,14 @@ workerSelf.onmessage = async (e: MessageEvent<WorkerRequest>) => {
     workerSelf.postMessage({ type: 'success', shapes } satisfies WorkerResponse, transfer)
 
   } catch (err) {
+    del(reader)
+    reader = null
+
     workerSelf.postMessage({
       type: 'error',
-      error: err instanceof Error ? err.message : String(err),
+      error: mapErrorMessage(err),
     } satisfies WorkerResponse)
+  } finally {
+    try { oc?.FS?.unlink?.('/' + fileName) } catch { /* already removed or never created */ }
   }
 }
